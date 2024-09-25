@@ -4,9 +4,9 @@
 #$2 = 2kb upstream ORs
 #$3 = genome .fasta
 
-BED_TEs="bedTEs"
-BED_2kb_genes="OR_genes"
-GENOMES=""
+BED_TEs="bedTEs" # Folder with bed file for TE insertions
+BED_2kb_genes="OR_genes" # Folder with bed files for 2kb upstream regions for ORs
+GENOMES="" # Path with the 7 genomes of cactophilic species
 
 species="dari
 dmoj01
