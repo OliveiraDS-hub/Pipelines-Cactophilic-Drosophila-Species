@@ -1,6 +1,6 @@
 #!/bin/bash
 
-species_specific_gff=""
+species_specific_gff="" ### specity the path and file name of the gff file
 
 for bam_file in *bam; do
   out_name=$(basename "$bam_file" | sed 's/.bam//g')
