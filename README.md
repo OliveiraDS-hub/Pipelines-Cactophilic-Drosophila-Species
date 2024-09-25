@@ -38,7 +38,13 @@ bash braker_command.sh
 ```
 
 
+## Differential expression analysis
 
+Dependicies list:
+  - [STAR](https://github.com/alexdobin/STAR)
+  - [featureCounts](https://subread.sourceforge.net/featureCounts.html)
+  - [deseq2](https://bioconductor.org/packages/release/bioc/html/DESeq2.html)
+  - [ggplot2](https://ggplot2.tidyverse.org)
 
 ## Permutation test
 
