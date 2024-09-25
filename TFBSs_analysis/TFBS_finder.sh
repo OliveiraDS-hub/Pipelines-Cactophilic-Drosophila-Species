@@ -5,8 +5,8 @@
 #$3 = genome .fasta
 
 BED_TEs="bedTEs"
-BED_2kb_genes="/home/oliveirads/project_phd/2024_data/TFBS_prediction/REVIEW_july_2024/OR_genes"
-GENOMES="/home/oliveirads/project_phd/2024_data/TFBS_prediction/REVIEW_july_2024/genomes"
+BED_2kb_genes="OR_genes"
+GENOMES=""
 
 species="dari
 dmoj01
@@ -24,31 +24,31 @@ zf30C_UN0798.1.meme"
 
 while read -r species; do
 
-  bedtools intersect -a "$BED_TEs"/"$species"_all_TEs_noverlap.bed -b "$BED_2kb_genes"/"$species"_or_2kbUP.bed -wa -wb > TEs_int_res.mbed
+  bedtools intersect -a "$BED_TEs"/"$species"_all_TEs.bed -b "$BED_2kb_genes"/"$species"_or_2kbUP.bed -wa -wb > TEs_int_res.mbed
   cut -f1-6 TEs_int_res.mbed > TEs_upstream.bed
   freq=$(cut -f7-12 TEs_int_res.mbed | sort | uniq | wc -l | awk '{print $1}')
   echo "SPECIES = $species = $freq"
 
   if [[ "$species" == "dari" ]]; then
-   	    bedtools getfasta -fi "$GENOMES"/Darizonae17.FlyeRacon3Medaka.fasta \
+   	    bedtools getfasta -fi "$GENOMES"/D_arizonae_genome.fasta \
    	    -bed TEs_upstream.bed -name+ -s > TEs_upstream.fa
   elif [[ "$species" == "dmoj01" ]]; then
-	      bedtools getfasta -fi "$GENOMES"/Dmojavensis01.FlyeRacon3Medaka.fasta \
+	      bedtools getfasta -fi "$GENOMES"/D_moj_mojavensis_genome.fasta \
         -bed TEs_upstream.bed -name+ -s > TEs_upstream.fa
   elif [[ "$species" == "dmoj20" ]]; then
-        bedtools getfasta -fi "$GENOMES"/Dmojavensis20_j23.FlyeRacon3Medaka.fasta \
+        bedtools getfasta -fi "$GENOMES"/D_moj_baja_genome.fasta \
         -bed TEs_upstream.bed -name+ -s > TEs_upstream.fa
   elif [[ "$species" == "dmoj22" ]]; then
-        bedtools getfasta -fi "$GENOMES"/Dmojavensis22.FlyeRacon3Medaka.fasta \
+        bedtools getfasta -fi "$GENOMES"/D_moj_wrigleyi_genome.fasta \
         -bed TEs_upstream.bed -name+ -s > TEs_upstream.fa
   elif [[ "$species" == "dmoj26" ]]; then
-        bedtools getfasta -fi "$GENOMES"/Dmojavensis26.FlyeRacon3Medaka.fasta \
+        bedtools getfasta -fi "$GENOMES"/D_moj_sonorensis_genome.fasta \
         -bed TEs_upstream.bed -name+ -s > TEs_upstream.fa
   elif [[ "$species" == "dkoep" ]]; then
-        bedtools getfasta -fi "$GENOMES"/Dkoepferae.FlyeRacon3Medaka.fasta \
+        bedtools getfasta -fi "$GENOMES"/D_koepferae_genome.fasta \
         -bed TEs_upstream.bed -name+ -s > TEs_upstream.fa
   elif [[ "$species" == "dbuz" ]]; then
-        bedtools getfasta -fi "$GENOMES"/Dbuzatti.FlyeRacon3Medaka.fasta \
+        bedtools getfasta -fi "$GENOMES"/D_buzzatii_genome.fasta \
         -bed TEs_upstream.bed -name+ -s > TEs_upstream.fa
   fi
 
