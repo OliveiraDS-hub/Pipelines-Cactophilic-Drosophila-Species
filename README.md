@@ -113,3 +113,18 @@ Rscript permut_and_plot.R dari_genes_2000upstream.bed dari_all_TEs.bed dari
 ```
 
 This command line will generate one histogram per HLAU family, and a dotplot containing all the z-scores named as `dari_enrichment_permut.pdf`
+
+
+## Transcription factor binding sites
+
+Dependencies list:
+  - [bedtools](https://github.com/arq5x/bedtools2)
+  - [MEME suite](https://meme-suite.org/meme/doc/download.html)
+
+In the script `TFBSs_analysis/TFBS_finder.sh` set the variables `GENOMES` with the path to the folder with the genome assemblies (.fasta)
+
+Run TFBSs identification:
+```
+bash TFBS_finder.sh
+```
+
