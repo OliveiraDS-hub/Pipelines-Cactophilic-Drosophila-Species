@@ -61,6 +61,7 @@ Dependencies list:
   - [bedtools](https://bedtools.readthedocs.io/en/latest/content/installation.html)
   - [trf](https://tandem.bu.edu/trf/trf.html)
   - [fastx_toolkit](https://github.com/agordon/fastx_toolkit/tree/master)
+  - [pandas package](https://pandas.pydata.org/docs/getting_started/install.html)
 
 Data:
   - [TE library from Dfam](https://zenodo.org/api/records/13117512/draft/files/Dfam3.7_droso_49kclassified.fa.zip/content)
