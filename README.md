@@ -69,6 +69,32 @@ Data:
   - [TE library from Dfam](https://zenodo.org/api/records/13117512/draft/files/Dfam3.7_droso_49kclassified.fa.zip/content)
   - [Reference CDS](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/018/153/725/GCF_018153725.1_ASM1815372v1/GCF_018153725.1_ASM1815372v1_cds_from_genomic.fna.gz)
 
+**Comand-line: Example for *D. arizonae***
+
+EarlGrey:
+
+```
+earlGrey -g D_arizonae_genome.fasta -s Darizonae -o dari -t 24
+```
+
+Once you created the library with EarlyGrey, the next polishing steps are performed with the code `TEannotation/TEannot.sh`. Before running, set up the variable `PATH_TO_REPEAT_CRAFT` in the line 23 of the code.
+
+Then run the code using the TE library from Dfam and the CDS file from *D. mojavensis* as reference:
+
+
+
+```
+bash TEannot.sh --genome D_arizonae_genome.fasta  \
+  --consensus built_consensus_from_EarlGrey.fa \
+  --cds GCF_018153725.1_ASM1815372v1_cds_from_genomic.fna \
+  --database Dfam3.7_droso_UNC_classfied.fa \
+  --threads 30
+```
+
+
+
+
+
 ## Differential expression analysis
 
 Dependicies list:
