@@ -5,7 +5,10 @@ This repository contains the code used to perform genomics and transcriptomics a
 
 ## Gene annotation
 
-The four *D. mojavensis* subspecies and *D. arizonae* genomes were annotated based on the [*D. mojavensis* reference genome](https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_018153725.1/).
+The four *D. mojavensis* subspecies and *D. arizonae* genomes were annotated based on the *D. mojavensis* [reference genome](https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_018153725.1/):
+  - [genome .fna](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/018/153/725/GCF_018153725.1_ASM1815372v1/GCF_018153725.1_ASM1815372v1_genomic.fna.gz)
+  - [genome annotation .gff](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/018/153/725/GCF_018153725.1_ASM1815372v1/GCF_018153725.1_ASM1815372v1_genomic.gff.gz)
+  
 The *D. buzzatii* and *D. koepferae* genomes were annotated with a de novo approach.
 
 Dependencies:
@@ -39,6 +42,29 @@ In the script `braker_command.sh`, set the variable `path_to_fastq_files` with t
 bash braker_command.sh
 ```
 
+## TE annotation
+
+TE annotation is performed with a pipeline with the following steps for each genome:
+  - Construction of the TE library
+  - Filtering out low quality consensuses
+  - Annotation of TE insertions in the genome
+  - Merging internal sequences to LTRs
+  - Removing highly repeated insertions 
+  - Removing overlapped insertions
+
+Dependencies list:
+  - [EarlGrey](https://github.com/TobyBaril/EarlGrey/releases/tag/v2.2)
+  - [blast](https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/)
+  - [seqtk](https://github.com/lh3/seqtk)
+  - [RepeatMasker](https://www.repeatmasker.org/RepeatMasker/)
+  - [samtools](http://www.htslib.org/download/)
+  - [bedtools](https://bedtools.readthedocs.io/en/latest/content/installation.html)
+  - [trf](https://tandem.bu.edu/trf/trf.html)
+  - [fastx_toolkit](https://github.com/agordon/fastx_toolkit/tree/master)
+
+Data:
+  - [TE library from Dfam](https://zenodo.org/api/records/13117512/draft/files/Dfam3.7_droso_49kclassified.fa.zip/content)
+  - [Reference CDS](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/018/153/725/GCF_018153725.1_ASM1815372v1/GCF_018153725.1_ASM1815372v1_cds_from_genomic.fna.gz)
 
 ## Differential expression analysis
 
