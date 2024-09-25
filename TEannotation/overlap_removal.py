@@ -1,4 +1,5 @@
 import pandas as pd
+import argparse
 
 def read_gtf(file):
     gtf_data = []
@@ -47,9 +48,16 @@ def write_gtf(df, file):
         for index, row in df.iterrows():
             f.write(f"{row['seqname']}\t{row['source']}\t{row['feature']}\t{row['start']}\t{row['end']}\t{row['score']}\t{row['strand']}\t{row['frame']}\t{row['attributes']}\n")
 
-input_file = 'dmoj26_RM_chimTE.gtf'
-output_file = 'dmoj26_RM_noverlap.gtf'
+if __name__ == "__main__":
+    # Set up argument parsing
+    parser = argparse.ArgumentParser(description='Filter overlapping GTF annotations.')
+    parser.add_argument('input_file', type=str, help='Input GTF file')
+    parser.add_argument('output_file', type=str, help='Output GTF file')
+    
+    # Parse the arguments
+    args = parser.parse_args()
 
-gtf_df = read_gtf(input_file)
-filtered_gtf_df = filter_overlapping_annotations(gtf_df)
-write_gtf(filtered_gtf_df, output_file)
+    # Process the GTF file
+    gtf_df = read_gtf(args.input_file)
+    filtered_gtf_df = filter_overlapping_annotations(gtf_df)
+    write_gtf(filtered_gtf_df, args.output_file)
