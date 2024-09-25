@@ -20,6 +20,7 @@ Oliveira D.S. 10/2023
 help
 }
 
+PATH_TO_REPEAT_CRAFT="" ## Set the path to repeatcraft software. From github, it must ends with "repeatcraftp"
 COVERAGE="50"
 THREADS="6"
 while [[ $# -gt 0 ]]; do
@@ -359,13 +360,13 @@ RepeatCraft () {
   LTR_FINDER_parallel -seq "$GENOME" -threads 30 1> /dev/null
   echo "Done!"
   echo -e "Parsing TE insertions with RepeatCraft..."
-  cat /home/oliveirads/softwares/repeatcraftp/example/repeatcraft_strict.cfg > config.cfg
+  cat "$PATH_TO_REPEAT_CRAFT"/example/repeatcraft_strict.cfg > config.cfg
 
   LTR_FINDER_out="${GENOME}.finder.combine.gff3"
   sed -i "s|ltr_finder_gff: None|ltr_finder_gff: "$LTR_FINDER_out"|" config.cfg
 
   set +e
-  python /home/oliveirads/softwares/repeatcraftp/repeatcraft.py \
+  python "$PATH_TO_REPEAT_CRAFT"/repeatcraft.py \
   -r "$GENOME".out.gff \
   -u "$GENOME".out \
   -c config.cfg -o repcraft.out -m loose 2>/dev/null
@@ -431,20 +432,13 @@ Filter_SSR() {
     fi
   done <<< "$masked_TEIDs"
 
-  grep -v -w -f repeats-notTEs.lst TEannot_RC_counted.gtf | sed 's/@.*//g' > TEeasy_RMpolished_final.gtf
+  grep -v -w -f repeats-notTEs.lst TEannot_RC_counted.gtf | sed 's/@.*//g' > TEeasy_RMpolished.gtf
+
+  python ../overlap_removal.py TEeasy_RMpolished.gtf TEeasy_RMpolished_final.gtf
   cd ../
 }
 
-Plot_landscape () {
-  echo -e "Generating kimura distance..."
-  cd 5_repcraft
-  ### I SHOULD CLEAN THE ALIGN FILE!
-  perl /home/oliveirads/softwares/RepeatMasker/util/calcDivergenceFromAlign.pl -s landscape.txt "$GENOME".align 2>/dev/null
-  tail -n 72 landscape.txt > tmp && mv tmp landscape.txt
 
-  g_size=$(grep 'total' *tbl | awk '{print $3}')
-  Rscript --vanilla ../landscape_plot.R ${g_size} ${output}
-}
 
 #RepeatModeler2 function
 #EarlGrey function
@@ -455,7 +449,6 @@ Short_consensus    ## OK WORKING
 RepeatCraft        ## OK WORKING
 Short_insertions   ## OK WORKING
 Filter_SSR         ## OK WORKING
-Plot_landscape     ## OK WORKING
 
 
 
