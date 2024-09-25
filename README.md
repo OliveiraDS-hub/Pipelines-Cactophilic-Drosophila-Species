@@ -62,6 +62,8 @@ Dependencies list:
   - [trf](https://tandem.bu.edu/trf/trf.html)
   - [fastx_toolkit](https://github.com/agordon/fastx_toolkit/tree/master)
   - [pandas package](https://pandas.pydata.org/docs/getting_started/install.html)
+  - [LTR_FINDER_parallel](https://github.com/oushujun/LTR_FINDER_parallel)
+  - [Repeat Craft](https://github.com/niccw/repeatcraftp)
 
 Data:
   - [TE library from Dfam](https://zenodo.org/api/records/13117512/draft/files/Dfam3.7_droso_49kclassified.fa.zip/content)
