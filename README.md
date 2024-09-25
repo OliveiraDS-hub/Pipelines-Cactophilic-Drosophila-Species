@@ -52,6 +52,7 @@ This analysis is composed for three main steps: genome alignment, raw counts, an
 
 
 **Genome alignemt**:
+
 In the script `Differential-expression/STAR_alignment.sh` set the preffix of the fastq libraries in the variable `libraries`. For example, if file names is `dmoj26_head_P1_R1.fastq.gz`, then replicate one preffix will be `dmoj26_head_P1`.
 Set the variable `DATA` with the path to the folder containing the fasta and gff of the genomes. Finally, set the variable `OUTPUT_STAR` with the path to write the STAR output (.bam files).
 
@@ -62,6 +63,7 @@ bash STAR_alignment.sh
 ```
 
 **Produce raw count matrix**:
+
 In the script `Differential-expresison/featurecounts.sh`, set the variable `species_specific_gff` with gff file for the specific species being analyzed. In the same folder as `featurecounts.sh`, keep the bam files of the same species that you set the gff file.
 
 Run the script for each species:
@@ -71,6 +73,7 @@ bash featurecounts.sh
 ```
 
 **Differential expression with DEseq2**:
+
 Four differential expresison analysis were performed, each one with their respective code in R:
   - mojavensis cluster, head tissue: mojavensis_head_DEA.R
   - mojavensis cluster, larvae tissue: mojavensis_larvae_DEA.R
