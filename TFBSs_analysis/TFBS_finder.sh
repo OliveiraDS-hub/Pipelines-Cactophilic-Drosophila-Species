@@ -4,7 +4,7 @@
 #$2 = 2kb upstream ORs
 #$3 = genome .fasta
 
-BED_TEs="/home/oliveirads/project_phd/2024_data/TE_annotation/REVIEW_july_2024"
+BED_TEs="bedTEs"
 BED_2kb_genes="/home/oliveirads/project_phd/2024_data/TFBS_prediction/REVIEW_july_2024/OR_genes"
 GENOMES="/home/oliveirads/project_phd/2024_data/TFBS_prediction/REVIEW_july_2024/genomes"
 
