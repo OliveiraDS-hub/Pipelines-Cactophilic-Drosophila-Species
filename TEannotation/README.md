@@ -1,0 +1,49 @@
+
+## TE annotation
+
+TE annotation is performed with a pipeline with the following steps for each genome:
+  - Construction of the TE library
+  - Filtering out low quality consensuses
+  - Annotation of TE insertions in the genome
+  - Merging internal sequences to LTRs
+  - Removing highly repeated insertions 
+  - Removing overlapped insertions
+
+Dependencies list:
+  - [EarlGrey](https://github.com/TobyBaril/EarlGrey/releases/tag/v2.2)
+  - [blast](https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/)
+  - [seqtk](https://github.com/lh3/seqtk)
+  - [RepeatMasker](https://www.repeatmasker.org/RepeatMasker/)
+  - [samtools](http://www.htslib.org/download/)
+  - [bedtools](https://bedtools.readthedocs.io/en/latest/content/installation.html)
+  - [trf](https://tandem.bu.edu/trf/trf.html)
+  - [fastx_toolkit](https://github.com/agordon/fastx_toolkit/tree/master)
+  - [pandas package](https://pandas.pydata.org/docs/getting_started/install.html)
+  - [LTR_FINDER_parallel](https://github.com/oushujun/LTR_FINDER_parallel)
+  - [Repeat Craft](https://github.com/niccw/repeatcraftp)
+
+Data:
+  - [TE library from Dfam](https://zenodo.org/api/records/13117512/draft/files/Dfam3.7_droso_49kclassified.fa.zip/content)
+  - [Reference CDS](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/018/153/725/GCF_018153725.1_ASM1815372v1/GCF_018153725.1_ASM1815372v1_cds_from_genomic.fna.gz)
+
+**Comand-line: Example for *D. arizonae***
+
+EarlGrey:
+
+```
+earlGrey -g D_arizonae_genome.fasta -s Darizonae -o dari -t 24
+```
+
+Once you created the library with EarlyGrey, the next polishing steps are performed with the code `TEannotation/TEannot.sh`. Before running, set up the variable `PATH_TO_REPEAT_CRAFT` in the line 23 of the code.
+
+Then run the code using the TE library from Dfam and the CDS file from *D. mojavensis* as reference:
+
+
+
+```
+bash TEannot.sh --genome D_arizonae_genome.fasta  \
+  --consensus built_consensus_from_EarlGrey.fa \
+  --cds GCF_018153725.1_ASM1815372v1_cds_from_genomic.fna \
+  --database Dfam3.7_droso_UNC_classfied.fa \
+  --threads 30
+```
