@@ -3,12 +3,12 @@
 BED_TEs="bed_TEs"
 BED_2kb_genes="nonHLAU_2kbUP"
 
-species="dari
-dmoj01
-dmoj22
-dmoj26
-dbuz
-dkoep"
+species="D_arizonae
+D_buzzatii
+D_koepferae
+D_moj_mojavensis
+D_moj_sonorensis
+D_moj_wrigleyi"
 
 TF="onecut_MA0235.1.meme
 xbp1_MA2293.1.meme
@@ -26,22 +26,22 @@ while read -r gene_fam; do
         freq=$(cut -f7-12 TEs_int_res_"$gene_fam".mbed | sort | uniq | wc -l | awk '{print $1}')
         echo "SPECIES = $species = $freq"
 
-        if [[ "$species" == "dari" ]]; then
+        if [[ "$species" == "D_arizonae" ]]; then
                 bedtools getfasta -fi D_arizonae_genome.fasta \
                 -bed TEs_upstream_"$gene_fam".bed -name+ -s > TEs_upstream_"$gene_fam".fa
-        elif [[ "$species" == "dmoj01" ]]; then
+        elif [[ "$species" == "D_moj_mojavensis" ]]; then
                 bedtools getfasta -fi D_moj_mojavensis_genome.fasta \
                 -bed TEs_upstream_"$gene_fam".bed -name+ -s > TEs_upstream_"$gene_fam".fa
-        elif [[ "$species" == "dmoj22" ]]; then
+        elif [[ "$species" == "D_moj_wrigleyi" ]]; then
                 bedtools getfasta -fi D_moj_wrigleyi_genome.fasta \
                 -bed TEs_upstream_"$gene_fam".bed -name+ -s > TEs_upstream_"$gene_fam".fa
-        elif [[ "$species" == "dmoj26" ]]; then
+        elif [[ "$species" == "D_moj_sonorensis" ]]; then
                 bedtools getfasta -fi D_moj_sonorensis_genome.fasta \
                 -bed TEs_upstream_"$gene_fam".bed -name+ -s > TEs_upstream_"$gene_fam".fa
-        elif [[ "$species" == "dkoep" ]]; then
+        elif [[ "$species" == "D_koepferae" ]]; then
                 bedtools getfasta -fi D_koepferae_genome.fasta \
                 -bed TEs_upstream_"$gene_fam".bed -name+ -s > TEs_upstream_"$gene_fam".fa
-        elif [[ "$species" == "dbuz" ]]; then
+        elif [[ "$species" == "D_buzzatii" ]]; then
                 bedtools getfasta -fi D_buzzatii_genome.fasta \
                 -bed TEs_upstream_"$gene_fam".bed -name+ -s > TEs_upstream_"$gene_fam".fa
         fi
