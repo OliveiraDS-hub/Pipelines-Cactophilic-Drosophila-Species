@@ -8,14 +8,16 @@ from Bio import SeqIO
 from io import StringIO
 
 parser = argparse.ArgumentParser()
-parser.add_argument("fasta_file", help="Path to the input FASTA file")
-parser.add_argument("TE_database", help="Path to the input FASTA file")
-parser.add_argument("species", help="Path to the input FASTA file")
+parser.add_argument("fasta_file", help="Path to the genome FASTA file")
+parser.add_argument("TE_database", help="Path to reference TEs in FASTA file")
+parser.add_argument("species", help="Species name - the same as output folder")
+parser.add_argument("threads", help="Total threads")
 args = parser.parse_args()
 
 fasta_file = args.fasta_file
 TE_db = args.TE_database
 species = args.species
+threads = args.threads
 
 ### 80% of the custom library must be covered with 80% of identity
 blast_result = subprocess.run("blastn -subject {} "
@@ -94,30 +96,24 @@ subprocess.run('samtools faidx classif_round2_done.fa_s5.tmp && awk \'$2 < 200\'
 ## Remove sequences from fasta
 subprocess.run('python remove_seqs.py {} {} {}'.format("classif_round2_done.fa_s5.tmp", "classif_round3_done.fa_s5.tmp", "cons_less_200nt_s5.tmp"), shell=True)
 ## Mask the remaining consensus with the database
-# subprocess.run('RepeatMasker classif_round3_done.fa -lib {} -pa 8'.format(TE_db), shell = True)
+print("Masking consensus... This process may take a while")
+subprocess.run('RepeatMasker classif_round3_done.fa_s5.tmp -lib {} -pa {}'.format(TE_db, threads), shell = True) #, stdout=subprocess.DEVNULL)
 subprocess.run('samtools faidx classif_round3_done.fa_s5.tmp', shell = True)
 fai_df = pd.read_csv("classif_round3_done.fa_s5.tmp.fai", sep="\t", header=None, usecols=[0,1],
                             names=["consensus_id", "seq_length"])
 
-## Import RepeatMasker output
-rm_out = glob.glob("*.out")
-# If you expect only one file
-if rm_out:
-    repeatmasker_file = rm_out[0]
 
 ##Define column names as per RepeatMasker's standard .out format
-col_names = [
-    "perc_div", "perc_del", "perc_ins",
+col_names = ["perc_div", "perc_del", "perc_ins",
     "query_sequence", "begin", "end", "left",
     "strand", "matching_repeat", "repeat_class_family",
     "r_begin", "r_end", "r_left", "ID"]
 
 # Read the RepeatMasker .out file (skip the first 3 header lines)
-output_rm_file = "rm_out_tab_delim.tsv_s5.tmp"
 
-cmd = f"cat {repeatmasker_file} | tr -s ' ' | sed 's/^ *//g' | tr ' ' '\t' | tail -n +4 > {output_rm_file}"
+cmd = f"cat classif_round3_done.fa_s5.tmp.out | tr -s ' ' | sed 's/^ *//g' | tr ' ' '\t' | tail -n +4 > rm_out_tab_delim.tsv_s5.tmp"
 subprocess.run(cmd, shell=True)
-rm_df = pd.read_csv(output_rm_file, 
+rm_df = pd.read_csv("rm_out_tab_delim.tsv_s5.tmp", 
                  sep="\t", 
                  usecols=[4,5,6,9,10],
                  names=["consensus_id", "start", "end", "family", "class"])
@@ -182,7 +178,6 @@ df_rename = pd.concat([df_rename, highest_class[["consensus_id", "consensus_new_
 
 # Remove rows where 'consensus_id' contains any of the unwanted keywords (case-insensitive)
 filtered_df = df_rename[~df_rename["consensus_id"].str.contains("satellite|complexity|rrna", case=False, na=False)]
-filtered_df.to_csv("renaming_df.tsv", index=False, header=False, sep = "\t")
 # Save the filtered list
 filtered_df["consensus_id"].to_csv("consensus_list_s5.tmp", index=False, header=False)
 
@@ -205,7 +200,7 @@ import pandas as pd
 id_map = dict(zip(df_rename["consensus_id"], df_rename["consensus_new_id"]))
 
 # Read and rename sequences
-with open("polished_TEs_s5.tmp") as infile, open("polished_TEs_s5.fa", "w") as outfile:
+with open("polished_TEs_s5.tmp") as infile, open(f"{species}/polished_TEs_s5.fa", "w") as outfile:
     for record in SeqIO.parse(infile, "fasta"):
         if record.id in id_map:
             record.id = id_map[record.id]
@@ -213,13 +208,13 @@ with open("polished_TEs_s5.tmp") as infile, open("polished_TEs_s5.fa", "w") as o
             record.description = ""
         SeqIO.write(record, outfile, "fasta")
 
-import shutil
-os.makedirs(species, exist_ok=True)
+# import shutil
+# os.makedirs(species, exist_ok=True)
 
-files = glob.glob("polished*")
-for f in files:
-    shutil.move(f, species)
-if os.path.exists(rm_out[0]):
-    shutil.move(rm_out[0], species)
-if os.path.exists("unclassified_consensus_s5.fa"):
-    shutil.move("unclassified_consensus_s5.fa", species)
+# files = glob.glob("polished*.fa")
+# for f in files:
+#     shutil.move(f, species)
+# if os.path.exists(rm_out[0]):
+#     shutil.move(rm_out[0], species)
+# if os.path.exists("unclassified_consensus_s5.fa"):
+#     shutil.move("unclassified_consensus_s5.fa", species)
