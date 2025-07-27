@@ -1,14 +1,14 @@
 #!/bin/bash
 
-BED_TEs="/home/oliveirads/project_phd/2025_june/TFBS_analysis/bed_TEs"
-BED_2kb_genes="/home/oliveirads/project_phd/2024_data/TFBS_prediction/REVIEW_july_2024/OR_genes"
+BED_TEs="bed_TEs"
+BED_2kb_genes="OR_genes"
 
-species="dari
-dmoj01
-dmoj22
-dmoj26
-dbuz
-dkoep"
+species="D_arizonae
+D_buzzatii
+D_koepferae
+D_moj_mojavensis
+D_moj_sonorensis
+D_moj_wrigleyi"
 
 TF="onecut_MA0235.1.meme
 xbp1_MA2293.1.meme
@@ -17,16 +17,16 @@ fer1_MA2233.1.meme
 zf30C_UN0798.1.meme"
 
 while read -r species; do
-  bedtools intersect -a "$BED_TEs"/TEannot_"$species"_POLISHED_fullclass.bed -b "$BED_2kb_genes"/"$species"_or_2kbUP.bed -wa -wb > TEs_int_res.mbed
+  bedtools intersect -a "$BED_TEs"/"$species"_TEs.bed -b "$BED_2kb_genes"/"$species"_OR_2kbUP.bed -wa -wb > TEs_int_res.mbed
   cut -f1-6 TEs_int_res.mbed > TEs_upstream.bed
   freq=$(cut -f7-12 TEs_int_res.mbed | sort | uniq | wc -l | awk '{print $1}')
   echo "SPECIES = $species = $freq"
 
   if [[ "$species" == "dari" ]]; then
-   	    bedtools getfasta -fi D_arizonae_genome.fasta \
+   	bedtools getfasta -fi D_arizonae_genome.fasta \
    	    -bed TEs_upstream.bed -name+ -s > TEs_upstream.fa
   elif [[ "$species" == "dmoj01" ]]; then
-	      bedtools getfasta -fi D_moj_mojavensis_genome.fasta \
+	 bedtools getfasta -fi D_moj_mojavensis_genome.fasta \
         -bed TEs_upstream.bed -name+ -s > TEs_upstream.fa
   elif [[ "$species" == "dmoj22" ]]; then
         bedtools getfasta -fi D_moj_wrigleyi_genome.fasta \
@@ -58,9 +58,9 @@ while read -r species; do
         TEstart=$(cut -f3 <<< "$insertions" | sed 's/-/\t/g' | cut -f1)
         TEend=$(cut -f3 <<< "$insertions" | sed 's/-/\t/g' | cut -f2)
         gene_ID=$(grep -w "$TE_fam" TEs_int_res.mbed | grep -w "$TEstart" | grep -w "$TEend" | cut -f10)
-	score=$(grep -w "$TE_fam" "$species"_"$specificTF"_fimo_out/fimo.tsv | grep -w "$TEstart" | grep -w "$TEend" | cut -f7 | head -1)
+	  score=$(grep -w "$TE_fam" "$species"_"$specificTF"_fimo_out/fimo.tsv | grep -w "$TEstart" | grep -w "$TEend" | cut -f7 | head -1)
         pvalue=$(grep -w "$TE_fam" "$species"_"$specificTF"_fimo_out/fimo.tsv | grep -w "$TEstart" | grep -w "$TEend" | cut -f8 | head -1)
-	qvalue=$(grep -w "$TE_fam" "$species"_"$specificTF"_fimo_out/fimo.tsv | grep -w "$TEstart" | grep -w "$TEend" | cut -f9 | head -1)
+	  qvalue=$(grep -w "$TE_fam" "$species"_"$specificTF"_fimo_out/fimo.tsv | grep -w "$TEstart" | grep -w "$TEend" | cut -f9 | head -1)
         start_copy=$(grep -w "$TE_fam" "$species"_"$specificTF"_fimo_out/fimo.tsv | grep -w "$TEstart" | grep -w "$TEend" | cut -f4 | head -1)
         end_copy=$(grep -w "$TE_fam" "$species"_"$specificTF"_fimo_out/fimo.tsv | grep -w "$TEstart" | grep -w "$TEend" | cut -f5 | head -1)
         TFBS=$(grep -w "$TE_fam" "$species"_"$specificTF"_fimo_out/fimo.tsv | grep -w "$TEstart" | grep -w "$TEend" | cut -f2 | head -1)

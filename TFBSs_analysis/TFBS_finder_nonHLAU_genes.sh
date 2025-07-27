@@ -1,7 +1,7 @@
 #!/bin/bash
 
-BED_TEs="/home/oliveirads/project_phd/2025_june/TFBS_analysis/bed_TEs"
-BED_2kb_genes="/home/oliveirads/project_phd/2025_june/TFBS_analysis/nonHLAU_2kbUP"
+BED_TEs="bed_TEs"
+BED_2kb_genes="nonHLAU_2kbUP"
 
 species="dari
 dmoj01
@@ -21,7 +21,7 @@ gene_fam="serine"
 while read -r gene_fam; do
     while read -r species; do
         if [[ ! -z "$species" ]]; then
-        bedtools intersect -a "$BED_TEs"/TEannot_"$species"_POLISHED_fullclass.bed -b "$BED_2kb_genes"/"$species"_"$gene_fam"_2kbUP.bed -wa -wb > TEs_int_res_$gene_fam.mbed
+        bedtools intersect -a "$BED_TEs"/"$species"_TEs.bed -b "$BED_2kb_genes"/"$species"_OR_2kbUP.bed -wa -wb > TEs_int_res_$gene_fam.mbed
         cut -f1-6 TEs_int_res_"$gene_fam".mbed > TEs_upstream_"$gene_fam".bed
         freq=$(cut -f7-12 TEs_int_res_"$gene_fam".mbed | sort | uniq | wc -l | awk '{print $1}')
         echo "SPECIES = $species = $freq"
