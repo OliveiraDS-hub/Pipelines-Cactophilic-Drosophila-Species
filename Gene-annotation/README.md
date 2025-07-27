@@ -11,7 +11,9 @@ You also need to copy the six genomes to this folder. They can be downloaded fro
 
 
 ### How the pipeline works
-Gene annotation with lifftoff will use the publicly available *D. moj. wrigleyi* genome (.fasta) and gene annotation (.gff) from NCBI, version GCF_018153725.1. 
+Gene annotation with lifftoff will use the publicly available *D. moj. wrigleyi* genome (.fasta) and gene annotation (.gff) from NCBI, version GCF_018153725.1. You can download them here:
+  - [genome .fna](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/018/153/725/GCF_018153725.1_ASM1815372v1/GCF_018153725.1_ASM1815372v1_genomic.fna.gz)
+  - [genome annotation .gff](https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/018/153/725/GCF_018153725.1_ASM1815372v1/GCF_018153725.1_ASM1815372v1_genomic.gff.gz)
 
 ### Running gene annotation
 
