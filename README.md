@@ -1,7 +1,7 @@
 # Overview
-This repository contains the code used to perform genomics and transcriptomics analysis from the pre-print manuscript:
+This repository contains the code used to perform genomics and transcriptomics analysis from manuscript:
 
-"Oliveira, Daniel Siqueira et al. Transposable elements as evolutionary driving force to host shift in cactophilic Drosophila species. bioRxiv, 10/24/2024, doi: 10.1101/2024.03.27.587021"
+[Oliveira, D. S., et al. "Transposable elements contribute to the evolution of host shift–related genes in cactophilic Drosophila species." Genome Research 36.3 (2026): 487-505.](https://genome.cshlp.org/content/36/3/487.short)
 
 ### Instructions and file descriptions:
 
